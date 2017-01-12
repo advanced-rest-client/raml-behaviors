@@ -1,5 +1,2 @@
-# filesystem-behavior
-A base behavior for filesystem.
-This behavior is a base behavior for `local-`, `sync-` and `web-` filesystem behaviors.
+[![Dependency Status](https://dependencyci.com/github/advanced-rest-client/raml-behaviors/badge)](https://dependencyci.com/github/advanced-rest-client/raml-behaviors)  
 
-See https://github.com/jarrodek/chrome-app-filesystem for more information.
