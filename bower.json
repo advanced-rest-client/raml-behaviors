@@ -10,9 +10,7 @@
   "keywords": [
     "web-components",
     "polymer",
-    "files",
-    "filesystem",
-    "chrome"
+    "raml"
   ],
   "repository": {
     "type": "git",
