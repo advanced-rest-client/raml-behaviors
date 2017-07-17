@@ -12,46 +12,8 @@ License for the specific language governing permissions and limitations under
 the License.
 -->
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../arc-polyfills/arc-polyfills.html">
 <script>
-if (!Object.keys) {
-  //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
-  Object.keys = (function() {
-    'use strict';
-    var hasOwnProperty = Object.prototype.hasOwnProperty;
-    var hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString');
-    var dontEnums = [
-      'toString',
-      'toLocaleString',
-      'valueOf',
-      'hasOwnProperty',
-      'isPrototypeOf',
-      'propertyIsEnumerable',
-      'constructor'
-    ];
-    var dontEnumsLength = dontEnums.length;
-    return function(obj) {
-      if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
-        throw new TypeError('Object.keys called on non-object');
-      }
-      var result = [];
-      var prop;
-      var i;
-      for (prop in obj) {
-        if (hasOwnProperty.call(obj, prop)) {
-          result.push(prop);
-        }
-      }
-      if (hasDontEnumBug) {
-        for (i = 0; i < dontEnumsLength; i++) {
-          if (hasOwnProperty.call(obj, dontEnums[i])) {
-            result.push(dontEnums[i]);
-          }
-        }
-      }
-      return result;
-    };
-  }());
-}
 /**
  * Common properties and methods for all RAML elements.
  *
@@ -59,7 +21,7 @@ if (!Object.keys) {
  */
 Polymer.RamlBehavior = {
   properties: {
-    // The RAML definition as JSON object. It can be obtained from RAML JS parser.
+    // The RAML definition as a JavaScript object.
     raml: Object,
     // RAML base types
     baseTypes: {
@@ -70,9 +32,16 @@ Polymer.RamlBehavior = {
       }
     }
   },
-  // Trurns true if the `obj` is empty.
+  /**
+   * Returns true if the `obj` is empty.
+   * **Deprecated** Use `hasValue` instead.
+   *
+   * @param {any} obj Object to test for value.
+   * @return {Boolean}
+   */
   isEmpty: function(obj) {
-    if (!obj && typeof obj !== 'number') {
+    var type = typeof obj;
+    if (!obj && ['number', 'boolean'].indexOf(type) === -1) {
       return true;
     }
     if ((obj instanceof Array) && !obj.length) {
@@ -82,6 +51,79 @@ Polymer.RamlBehavior = {
       return true;
     }
     return false;
+  },
+  /**
+   * Transforms type's properties to an array.
+   *
+   * Each array item object contsains a `key` property which is an Object's
+   * key.
+   *
+   * @param {Object} type RAML's type definition.
+   * @return {Object|undefined} The same object with properties as array.
+   */
+  typeProperties: function(type) {
+    if (!type) {
+      return;
+    }
+    if (type.properties) {
+      if (!(type.properties instanceof Array)) {
+        var names = Object.keys(type.properties);
+        // https://github.com/mulesoft/api-console/issues/493
+        // Maps do not guarantee order. As the spec says:
+        // [object is] unordered collection of properties.
+        // This will "quasi" order the items, thoug original order set in
+        // RAML will never be preserved since output of a properties list
+        // is object.
+        names.sort();
+        var properties = [];
+        names.forEach(function(name) {
+          var item = type.properties[name];
+          item.key = name;
+          properties.push(item);
+        });
+        type.properties = properties;
+      }
+    }
+    return type;
+  },
+
+  /**
+   * Checks if passed object is set and has any value.
+   * 0 (zero) and empty string returns true.
+   *
+   * @return {Boolean} True/False depending if passed object has a value.
+   */
+  hasValue: function(obj) {
+    var type = typeof obj;
+    if (type === 'number' && obj === 0) {
+      return true;
+    }
+    if (type === 'boolean') {
+      return true;
+    }
+    if (type === 'string' && obj === '') {
+      return true;
+    }
+    if ((obj instanceof Array) && !obj.length) {
+      return false;
+    }
+    if ((obj instanceof Object) && !Object.keys(obj).length) {
+      return false;
+    }
+    return !!obj;
+  },
+  /**
+   * Computes RAML type's object display name.
+   *
+   * @param {Object} type RAML type definition.
+   * @return {String|undefined} (in that order) display name, name, key and
+   * `undefined`
+   */
+  typeName: function(type) {
+    if (!type) {
+      return;
+    }
+    return type.displayName || type.name || type.key || undefined;
   }
 };
 </script>

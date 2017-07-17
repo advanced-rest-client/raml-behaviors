@@ -1,0 +1,183 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+    <script src="../../iron-test-helpers/test-helpers.js"></script>
+    <link rel="import" href="raml-element.html">
+  </head>
+  <body>
+
+    <test-fixture id="basic">
+      <template>
+        <raml-element></raml-element>
+      </template>
+    </test-fixture>
+
+    <script>
+    /* global fixture, assert */
+    suite('basic', function() {
+      suite('isEmpty() (deprecated)', function() {
+        var element;
+        setup(function() {
+          element = fixture('basic');
+        });
+
+        test('Returns true for empty object', function() {
+          assert.isTrue(element.isEmpty({}));
+        });
+
+        test('Returns true for undefined', function() {
+          assert.isTrue(element.isEmpty());
+        });
+
+        test('Returns true for null', function() {
+          assert.isTrue(element.isEmpty(null));
+        });
+
+        test('Returns true for empty string', function() {
+          assert.isTrue(element.isEmpty(''));
+        });
+
+        test('Returns true for empty array', function() {
+          assert.isTrue(element.isEmpty([]));
+        });
+
+        test('Returns false for zero', function() {
+          assert.isFalse(element.isEmpty(0));
+        });
+
+        test('Returns false for number', function() {
+          assert.isFalse(element.isEmpty(1));
+        });
+
+        test('Returns false for false', function() {
+          assert.isFalse(element.isEmpty(false));
+        });
+
+        test('Returns false for true', function() {
+          assert.isFalse(element.isEmpty(true));
+        });
+
+        test('Returns false for object with value', function() {
+          assert.isFalse(element.isEmpty({a: 'b'}));
+        });
+
+        test('Returns false for array with value', function() {
+          assert.isFalse(element.isEmpty(['a']));
+        });
+      });
+
+      suite('typeProperties()', function() {
+        var element;
+        var obj;
+        setup(function() {
+          element = fixture('basic');
+          obj = element.typeProperties({
+            name: 'type',
+            type: 'object',
+            properties: {
+              'A': {
+                name: 'A',
+                type: 'string',
+                required: true
+              },
+              'B': {
+                name: 'B',
+                type: 'string',
+                required: false
+              }
+            }
+          });
+        });
+
+        test('Preserves object properties', function() {
+          assert.equal(obj.name, 'type');
+          assert.equal(obj.type, 'object');
+          assert.typeOf(obj.properties, 'array');
+        });
+
+        test('Properties are array', function() {
+          assert.typeOf(obj.properties, 'array');
+        });
+
+        test('Properties has 2 items', function() {
+          assert.lengthOf(obj.properties, 2);
+        });
+
+        test('Sort results', function() {
+          assert.equal(obj.properties[0].name, 'A');
+        });
+
+        test('Adds key property', function() {
+          assert.equal(obj.properties[0].key, 'A');
+        });
+      });
+
+      suite('hasValue()', function() {
+        var element;
+        setup(function() {
+          element = fixture('basic');
+        });
+
+        test('Returns false for empty object', function() {
+          assert.isFalse(element.hasValue({}));
+        });
+
+        test('Returns false for undefined', function() {
+          assert.isFalse(element.hasValue());
+        });
+
+        test('Returns false for null', function() {
+          assert.isFalse(element.hasValue(null));
+        });
+
+        test('Returns false for empty array', function() {
+          assert.isFalse(element.hasValue([]));
+        });
+
+        test('Returns true for empty string', function() {
+          assert.isTrue(element.hasValue(''));
+        });
+
+        test('Returns true for zero', function() {
+          assert.isTrue(element.hasValue(0));
+        });
+
+        test('Returns true for number', function() {
+          assert.isTrue(element.hasValue(1));
+        });
+
+        test('Returns true for false', function() {
+          assert.isTrue(element.hasValue(false));
+        });
+
+        test('Returns true for true', function() {
+          assert.isTrue(element.hasValue(true));
+        });
+
+        test('Returns true for object with value', function() {
+          assert.isTrue(element.hasValue({a: 'b'}));
+        });
+
+        test('Returns true for array with value', function() {
+          assert.isTrue(element.hasValue(['a']));
+        });
+      });
+    });
+    </script>
+
+  </body>
+</html>

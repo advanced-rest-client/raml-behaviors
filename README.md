@@ -1,2 +1,2 @@
-[![Dependency Status](https://dependencyci.com/github/advanced-rest-client/raml-behaviors/badge)](https://dependencyci.com/github/advanced-rest-client/raml-behaviors)  
+[![Build Status](https://travis-ci.org/advanced-rest-client/raml-behaviors.svg?branch=stage)](https://travis-ci.org/advanced-rest-client/raml-behaviors)  
 
