@@ -1,4 +1,3 @@
-
 language: node_js
 dist: trusty
 node_js: stable
@@ -9,7 +8,8 @@ addons:
   sauce_connect: false
 script:
 - npm run lint
-- ./node_modules/.bin/polymer test --plugin sauce --job-name "raml-behaviors:${TRAVIS_BRANCH}" --build-number=${TRAVIS_BUILD_NUMBER}
+- ./node_modules/.bin/polymer test --plugin sauce --job-name "raml-behaviors:${TRAVIS_BRANCH}"
+  --build-number=${TRAVIS_BUILD_NUMBER}
 cache:
   directories:
   - node_modules
@@ -19,3 +19,7 @@ branches:
   - develop
 after_success:
 - node tasks/ci.js
+env:
+  global:
+  - secure: JcQqofPnSOif+smvWfBk3GSyRHnAkRmRncNr765RHQ7SpE1qwaM3apF82hW4rBCcQ6G2v4qwMBIPjGk/W0wl6svFcCKFGH9G3LZUMGe6lNH8a2oSgFAtwdwC7fo4cUeAYyaJYYBqpAzW3Bnvx1vy1gcvnWysLEH5NlLjE7VdaVRL9QYaeOlfPz6EVncJRysLzBiHO1WmZRtyPsVCiMuKq/N5oj+cWWiSx5VcK3R6sIsuY28iWQTojGY2xp0eyMFPhfZ+iotKcUV7BILeXASfM7n5u1Q+Et8KRng3DSEn/dxqC7F60jY6+CEjc+X733SXEiJDNtVh/8o4AZl7jZGGxXl3+mfeUfr9orfBYDRaTicvK6YIdE0r2f9hrM7lxupWMNjPOLMv0SgbjvLiIeouKS3KTLCN36kMiXMBCRuoHS6Zcv6dAbjqOhQ5kA7Dvfy7U3xlPsLG5mGbnQf3bvd7dw1oJtWA/5fyln+Ck40apj+VygZd1ntYo3YM8jOBJgyYS3TaI7fAm4hD46AjKq8TDpFvFKhsoa3SlbZS8G/kMLsBbV5Du7bnLLfv/vOTS0+AhUqYWdZg5wz/pvxzOc7G7vU8ZMprH6faL8GSRDx6e6ogBzqg8Zmeg00EVPh2b7ulf+Rgb2frXEi1a8/uv1q+f87qhH4Y8T/AntOXg+3+aJg=
+  - secure: gd8dzsbwO2K6PDEdamTNhdcjpb794cXToiqD+GnlQF9YHeVS8TqsHyP7MUhOP+Z/xzkRbNfer9zYnQHeZkyH0OyFfvL2p2mjW0yq9Nx/KcczFwslU0/M40o+NfuqqCYq4rQ0xwnGIuj6fE+vT4110e6D7kYbnZc0uI0eyyrauZYuRiSxmF1j0XXr+oxrygQFIfkO6q4O2MMD0SQoiwndiZQcDQ95V14Hw2VttXfvW3dY1UgRgpjeVY17Yug3v5HKqoeB1vh7L8DYo1VuyjwVdJve9qxyT2hNu1QU3FCmDhaLtPj4mqpHgT34vibXqKcu3y3u3OkxqjyAFqyF6dq5FwDTM5mFzDo78YKo3wKb1U2qMiK0Ov8FTSf8Pzjv1STbmgMMqOY+3YN0eZsy9hjUp2oyvjOgEOhdSQWuNVqE1xFnTlk//m9KaYid+XW+tAztovZLjUvXF718JQAicPnoXESUCSha0/CayVpQAYdurAkTwnyBoLi+dM2ImQhF4yXU29AciCm4vHBLejpGmsrPGDaikBJ0Z+LGRKfg3CDLrJZ717Fuq2QABuLLpSy/uflZ46oWaZYSIeyhqr0/EChnrA0J2EvxvYU0Nczy9qqF0eWOJBhUEdeS0iT1Z2eZAfOGWgTkvt2xKNibCf2XfBnoAfIThZDl/mC2YFs6rfdFzNE=
